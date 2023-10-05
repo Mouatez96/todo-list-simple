@@ -11,10 +11,14 @@ import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {HttpClientModule} from "@angular/common/http";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatDialogModule} from "@angular/material/dialog";
+import {ConfirmDeleteComponent} from "./components/confirm-delete/confirm-delete.component";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfirmDeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,9 @@ import {HttpClientModule} from "@angular/common/http";
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

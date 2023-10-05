@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {TodoServiceService} from "./services/todo-service.service";
+import {TodoServiceService} from "./services/todo-service/todo-service.service";
+import {CoreService} from "./services/core/core.service";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmDeleteComponent} from "./components/confirm-delete/confirm-delete.component";
 
 export interface Todo {
   task: string;
@@ -19,7 +22,9 @@ export class AppComponent implements OnInit{
   todoForm !: FormGroup;
 
   constructor(private _fb: FormBuilder,
-              private _service: TodoServiceService) {}
+              private _service: TodoServiceService,
+              private _coreService: CoreService,
+              private _dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -36,8 +41,9 @@ export class AppComponent implements OnInit{
   onFormSubmit() {
     this._service.addTodo(this.todoForm.value).subscribe({
       next: (value:any) => {
-        console.log("Task added successfully");
+        this._coreService.openSnackBar("Task added successfully", "done");
         this.getTodoList()
+        this.initForm()
       },
       error: console.log
     })
@@ -52,13 +58,12 @@ export class AppComponent implements OnInit{
     })
   }
 
-  deleteTask(id: number) {
-    this._service.deleteTodo(id).subscribe({
-      next: (value) => {
-        console.log("Task deleted successfully");
-        this.getTodoList();
-      },
-      error: console.log
+  openDeleteDialog(data:any) {
+    const dialogRef = this._dialog.open(ConfirmDeleteComponent, {data});
+    dialogRef.afterClosed().subscribe({
+      next : value =>  {
+        this.getTodoList()
+      }
     })
   }
 
