@@ -23,6 +23,7 @@ export class ConfirmDeleteComponent implements OnInit {
       next: (value) => {
         this._coreService.openSnackBar("Task deleted successfully", "ok")
         this._dialogRef.close(true);
+        localStorage.removeItem('checkbox_'+this.data);
       },
       error: console.log
     })

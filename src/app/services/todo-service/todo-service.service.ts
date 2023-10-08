@@ -16,7 +16,6 @@ export class TodoServiceService {
   addTodo(todo: Todo) {
     return this._http.post(this.apiUrl, todo)
   }
-
   deleteTodo(id: number) {
     return this._http.delete(this.apiUrl+`/${id}`)
   }

@@ -17,7 +17,7 @@ export interface Todo {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  displayedColumns: string[] = ['task', 'type', 'action'];
+  displayedColumns: string[] = ['task', 'type', 'completed', 'action'];
   dataSource !: MatTableDataSource<Todo>;
   todoForm !: FormGroup;
 
@@ -39,14 +39,16 @@ export class AppComponent implements OnInit{
   }
 
   onFormSubmit() {
-    this._service.addTodo(this.todoForm.value).subscribe({
-      next: (value:any) => {
-        this._coreService.openSnackBar("Task added successfully", "done");
-        this.getTodoList()
-        this.initForm()
-      },
-      error: console.log
-    })
+    if(true) {
+      this._service.addTodo(this.todoForm.value).subscribe({
+        next: (value : any) => {
+          this._coreService.openSnackBar("Task added successfully", "done");
+          this.getTodoList()
+          this.initForm()
+        },
+        error: console.log
+      })
+    }
   }
 
   getTodoList() {
@@ -65,6 +67,16 @@ export class AppComponent implements OnInit{
         this.getTodoList()
       }
     })
+  }
+
+  isChecked(id:number): boolean {
+    const isCheckedString = localStorage.getItem('checkbox_'+id);
+    return isCheckedString === 'true';
+  }
+
+  onCheckBoxChanged(id:number) {
+    const isChecked = !this.isChecked(id);
+    localStorage.setItem('checkbox_'+id, isChecked.toString());
   }
 
 }
